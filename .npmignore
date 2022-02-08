@@ -20,3 +20,11 @@ docs
 *.node
 yuidocs
 yuidoc.json
+yuidocs
+scripts
+win-compile.bat
+.idea
+*.iml
+data
+packaged
+!deps/libgdal/gdal/d

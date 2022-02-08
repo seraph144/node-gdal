@@ -7,7 +7,7 @@
 	},
 	"targets": [
 		{
-			"target_name": "gdal",
+			"target_name": "<(module_name)",
 			"type": "loadable_module",
 			"win_delay_load_hook": "false",
 			"product_prefix": "",
@@ -119,6 +119,23 @@
 							}
 						}]
 					]
+				}],
+				["'<(mrsid_include)' != ''", {
+					"conditions": [
+						["OS == 'win'", {
+							"libraries": [
+								"<(mrsid_include)/Raster_DSDK/lib/lti_dsdk.lib",
+								"<(mrsid_include)/Raster_DSDK/lib/lti_dsdk_cdll.lib",
+								"<(mrsid_include)/Lidar_DSDK/lib/lti_lidar_dsdk.lib"
+							]
+						}],
+						["OS != 'win'", {
+							"libraries": [
+								"<!@(node -p \"require('fs').readdirSync('<(mrsid_include)/Raster_DSDK/lib/').map(f=>'<(mrsid_include)/Raster_DSDK/lib/'+f).join(' ')\")",
+								"<!@(node -p \"require('fs').readdirSync('<(mrsid_include)/Lidar_DSDK/lib/').map(f=>'<(mrsid_include)/Lidar_DSDK/lib/'+f).join(' ')\")"
+							]
+						}]
+					]
 				}]
 			]
 		},
@@ -129,10 +146,23 @@
 			"copies": [
 				{
 					"files": [
-						"<(PRODUCT_DIR)/gdal.node"
+						"<(PRODUCT_DIR)/<(module_name).node"
 					],
 					"destination": "<(module_path)"
 				}
+			],
+			"conditions" : [
+				["'<(mrsid_include)' != ''", {
+					"copies": [
+						{
+							"files": [
+								"<!@(node -p \"require('fs').readdirSync('<(mrsid_include)/Raster_DSDK/lib/').map(f=>'<(mrsid_include)/Raster_DSDK/lib/'+f).join(' ')\")",
+								"<!@(node -p \"require('fs').readdirSync('<(mrsid_include)/Lidar_DSDK/lib/').map(f=>'<(mrsid_include)/Lidar_DSDK/lib/'+f).join(' ')\")"
+							],
+							"destination": "<(module_path)"
+						}
+					]
+				}]
 			]
 		}
 	]

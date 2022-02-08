@@ -5,22 +5,24 @@
 
 Read and write raster and vector geospatial datasets straight from [Node.js](http://nodejs.org) with this native [GDAL](http://www.gdal.org/) binding. GDAL [2.4.4](https://github.com/OSGeo/gdal/releases/tag/v2.4.4) ([GEOS](http://trac.osgeo.org/geos/) [3.4.2](http://trac.osgeo.org/geos/browser/tags/3.4.2/NEWS), [PROJ](http://trac.osgeo.org/proj/) [4.8.0](http://www.osgeo.org/node/1268)) comes bundled, so node-gdal will work straight out of the box. To get started, browse the [**API Documentation**](http://naturalatlas.github.io/node-gdal/classes/gdal.html) or [examples](examples/).
 
+This is a fork of the great work done by the [Natural Atlas](https://github.com/naturalatlas) team with some additional drivers and functionality added.
+
 ```sh
-$ npm install gdal --save
+$ npm install gdal-enhanced --save
 ```
 
 To link against shared libgdal, install using:
 
 ```sh
 # requires libgdal-dev (debian: sudo apt-get install libgdal-dev)
-$ npm install gdal --build-from-source --shared_gdal
+$ npm install gdal-enhanced --build-from-source --shared_gdal
 ```
 
 ## Sample Usage
 
 #### Raster
 ```js
-var gdal = require("gdal");
+var gdal = require("gdal-enhanced");
 var dataset = gdal.open("sample.tif");
 
 console.log("number of bands: " + dataset.bands.count());
@@ -31,7 +33,7 @@ console.log("srs: " + (dataset.srs ? dataset.srs.toWKT() : 'null'));
 ```
 #### Vector
 ```js
-var gdal = require("gdal");
+var gdal = require("gdal-enhanced");
 var dataset = gdal.open("sample.shp");
 var layer = dataset.layers.get(0);
 
@@ -59,10 +61,6 @@ Before submitting pull requests, please update the [tests](test) and make sure t
 $ make test # test against bundled gdal
 $ make test-shared # test against shared gdal
 ```
-
-## Alternate Fork
-
-For an alternate fork that's more bleeding-edge at the moment, check out [gdal-next](https://www.npmjs.com/package/gdal-next) and evaluate which project works best for your needs. The [module-alias](https://www.npmjs.com/package/module-alias) package can be useful if gdal is deep in your dependency tree and you don't want to update references everywhere.
 
 ## License
 
