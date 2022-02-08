@@ -1,6 +1,6 @@
 {
   "name": "gdal-enhanced-seraph",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Bindings to GDAL (Geospatial Data Abstraction Library) with non-default drivers",
   "license": "Apache-2.0",
   "url": "http://github.com/seraph144/node-gdal",
@@ -37,7 +37,7 @@
   },
   "scripts": {
     "test": "mocha -n expose-gc -R tap --timeout 600000 --no-colors --require ./test/_common.js test",
-    "install": "node-pre-gyp install --fallback-to-build --update-binary --build-from-source",
+    "install": "node-pre-gyp install --fallback-to-build",
     "yuidoc": "yuidoc --extension .js,.cpp,.hpp",
     "package": "npm run copy-pkg-deps -s && pkg . --targets node10 --out-dir packaged",
     "copy-pkg-deps": "copyfiles -f lib/binding/node-*/* packaged"
