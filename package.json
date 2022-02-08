@@ -1,5 +1,5 @@
 {
-  "name": "gdal-enhanced",
+  "name": "gdal-enhanced-seraph",
   "version": "0.11.0",
   "description": "Bindings to GDAL (Geospatial Data Abstraction Library) with non-default drivers",
   "license": "Apache-2.0",
@@ -21,7 +21,7 @@
     "mapping"
   ],
   "binary": {
-    "module_name": "gdal_enhanced",
+    "module_name": "gdal_enhanced_seraph",
     "module_path": "./lib/binding",
     "remote_path": "seraph144/node-gdal/releases/download/{version}",
     "host": "https://github.com",

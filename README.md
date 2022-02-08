@@ -8,21 +8,21 @@ Read and write raster and vector geospatial datasets straight from [Node.js](htt
 This is a fork of the great work done by the [Natural Atlas](https://github.com/naturalatlas) team with some additional drivers and functionality added.
 
 ```sh
-$ npm install gdal-enhanced --save
+$ npm install gdal-enhanced-seraph --save
 ```
 
 To link against shared libgdal, install using:
 
 ```sh
 # requires libgdal-dev (debian: sudo apt-get install libgdal-dev)
-$ npm install gdal-enhanced --build-from-source --shared_gdal
+$ npm install gdal-enhanced-seraph --build-from-source --shared_gdal
 ```
 
 ## Sample Usage
 
 #### Raster
 ```js
-var gdal = require("gdal-enhanced");
+var gdal = require("gdal-enhanced-seraph");
 var dataset = gdal.open("sample.tif");
 
 console.log("number of bands: " + dataset.bands.count());
@@ -33,7 +33,7 @@ console.log("srs: " + (dataset.srs ? dataset.srs.toWKT() : 'null'));
 ```
 #### Vector
 ```js
-var gdal = require("gdal-enhanced");
+var gdal = require("gdal-enhanced-seraph");
 var dataset = gdal.open("sample.shp");
 var layer = dataset.layers.get(0);
 
