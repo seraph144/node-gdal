@@ -53,6 +53,9 @@ MRSID_CONFIG =     Release_md
 !IFNDEF MRSID_JP2
 MRSID_JP2 =        NO
 !ENDIF
+!IFNDEF MRSID_CONFIG
+MRSID_DIR =     C:\MrSID_SDK
+!ENDIF
 
 ###############################################################################
 #

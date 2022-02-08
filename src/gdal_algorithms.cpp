@@ -4,6 +4,8 @@
 #include "gdal_dataset.hpp"
 #include "gdal_rasterband.hpp"
 #include "utils/number_list.hpp"
+#include "cpl_string.h"
+#include "utils/translate_options.hpp"
 
 namespace node_gdal {
 
@@ -14,6 +16,7 @@ void Algorithms::Initialize(Local<Object> target)
 	Nan::SetMethod(target, "sieveFilter", sieveFilter);
 	Nan::SetMethod(target, "checksumImage", checksumImage);
 	Nan::SetMethod(target, "polygonize", polygonize);
+	Nan::SetMethod(target, "translate", translate);
 }
 
 /**
@@ -285,6 +288,86 @@ NAN_METHOD(Algorithms::polygonize)
 		NODE_THROW_CPLERR(err);
 		return;
 	}
+
+	return;
+}
+
+**
+ * Calls gdal_translate.
+ *
+ * @throws Error
+ * @method translate
+ * @static
+ * @for gdal
+ * @param {Object} options
+ * @param {gdal.Dataset} options.src the source dataset handle
+ * @param {String} options.dst the destination dataset path
+ * @param {String} [options.outputFormat] the desired output format. see ({{#crossLink "gdal.GDALDrivers"}}drivers list{{/crossLink}}) for possible options.
+ * @param {gdal.Envelope} [options.projWin] selects a subwindow from the source image for copying with the corners given in georeferenced coordinates (by default expressed in the SRS of the dataset. Can be changed with projWinSRS)
+ * @param {String} [options.projWinSRS] specifies the SRS in which to interpret the coordinates given with projWin. The srs_def may be any of the usual GDAL/OGR forms, complete WKT, PROJ.4, EPSG:n or a file containing the WKT. Note that this does not cause reprojection of the dataset to the specified SRS.
+ * @return {gdal.Dataset} newly created dataset
+ */
+NAN_METHOD(Algorithms::translate)
+{
+	Nan::HandleScope scope;
+
+	Local<Object> obj;
+	Local<Value> prop;
+
+	GDALDataset* src;
+	std::string dst;
+	TranslateOptions options;
+	GDALTranslateOptions* opts;
+	Dataset* res;
+
+	NODE_ARG_OBJECT(0, "options", obj);
+
+    if(options.parse(obj)){
+        return; // error parsing options object
+    } else {
+        opts = options.get();
+    }
+
+	// Parse input source dataset
+    if(obj->HasOwnProperty(Nan::New("src").ToLocalChecked())){
+        prop = obj->Get(Nan::New("src").ToLocalChecked());
+        if(prop->IsObject() && !prop->IsNull() && Nan::New(Dataset::constructor)->HasInstance(prop)){
+            Dataset *ds = Nan::ObjectWrap::Unwrap<Dataset>(prop.As<Object>());
+            src = ds->getDataset();
+            if(!src){
+                #if GDAL_VERSION_MAJOR < 2
+                if(ds->getDatasource()) {
+                    Nan::ThrowError("src dataset must be a raster dataset"); return;
+                }
+                #endif
+                Nan::ThrowError("src dataset already closed"); return;
+            }
+        } else {
+            Nan::ThrowTypeError("src property must be a Dataset object"); return;
+        }
+    } else {
+        Nan::ThrowError("Translate options must include a source dataset"); return;
+    }
+
+    // Parse target destination path
+    Local<String> sym = Nan::New("dst").ToLocalChecked();
+    if (!obj->HasOwnProperty(sym)){
+        Nan::ThrowError("Object must contain property dst"); return;
+    }
+    Local<Value> val = obj->Get(sym);
+    if (!val->IsString()){
+        Nan::ThrowTypeError("Property dst must be a string"); return;
+    }
+	NODE_STR_FROM_OBJ(obj, "dst", dst);
+
+    NODE_STR_FROM_OBJ_OPT(obj, "outputFormat", opts->pszFormat);
+
+	// Call translate function
+	GDALTranslate(dst.c_str(), src, opts, NULL);
+
+	// Set return value
+	// TODO Implement this
+//	info.GetReturnValue().Set(Nan::New<Dataset>(res));
 
 	return;
 }

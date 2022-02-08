@@ -5,10 +5,12 @@
 	"variables": {
 		"shared_geos%": "false",
 		"endianness": "<!(python -c \"import sys;print(sys.byteorder.upper())\")",
+		"sqlite_version%": "3150000",
 	},
 	"target_defaults": {
 		"include_dirs": [
 			"./gdal/alg",
+			"./gdal/apps",
 			"./gdal/gcore",
 			"./gdal/apps",
 			"./gdal/port",
