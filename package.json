@@ -39,7 +39,7 @@
   },
   "scripts": {
     "test": "mocha -n expose-gc -R tap --timeout 600000 --no-colors --require ./test/_common.js test",
-    "install": "node-pre-gyp install --fallback-to-build --build-from-source",
+    "install": "node-pre-gyp install --fallback-to-build",
     "yuidoc": "yuidoc --extension .js,.cpp,.hpp"
   },
   "dependencies": {
