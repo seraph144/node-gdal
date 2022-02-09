@@ -25,7 +25,7 @@ int TranslateOptions::parse(Local<Value> value)
 	Local<Value> prop, prop2;
 
     // Output format
-    if (obj->HasOwnProperty(Nan::New("outputFormat").ToLocalChecked())) {
+    if (Nan::HasOwnProperty(obj, Nan::New("outputFormat").ToLocalChecked()).FromMaybe(false)) {
         prop = obj->Get(Nan::New("outputFormat").ToLocalChecked());
         if (!prop->IsString()) {
             Nan::ThrowTypeError("outputFormat property must be a string");
@@ -36,12 +36,12 @@ int TranslateOptions::parse(Local<Value> value)
     }
 
     // Projected window to clip by
-    if (obj->HasOwnProperty(Nan::New("projWin").ToLocalChecked())) {
+    if (Nan::HasOwnProperty(obj, Nan::New("projWin").ToLocalChecked()).FromMaybe(false)) {
         prop = obj->Get(Nan::New("projWin").ToLocalChecked());
         if (prop->IsObject()) {
             obj2 = prop->ToObject();
             // Assume if minX property is present the other three envelope values are
-            if (obj2->HasOwnProperty(Nan::New("minX").ToLocalChecked())) {
+            if (Nan::HasOwnProperty(obj2, Nan::New("minX").ToLocalChecked()).FromMaybe(false)) {
                 prop2 = obj2->Get(Nan::New("minX").ToLocalChecked());
                 if (prop2->IsNumber() && !prop2->IsNull()) {
                     options->dfULX = prop2->NumberValue();
@@ -60,7 +60,7 @@ int TranslateOptions::parse(Local<Value> value)
     }
 
     // Projected window spatial reference system
-    if (obj->HasOwnProperty(Nan::New("projWinSRS").ToLocalChecked())) {
+    if (Nan::HasOwnProperty(obj, Nan::New("projWinSRS").ToLocalChecked()).FromMaybe(false)) {
         prop = obj->Get(Nan::New("projWinSRS").ToLocalChecked());
         if (!prop->IsString()) {
             Nan::ThrowTypeError("projWinSRS property must be any of the usual GDAL/OGR forms, complete WKT, PROJ.4, EPSG:n or a file containing the WKT");

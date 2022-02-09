@@ -292,7 +292,7 @@ NAN_METHOD(Algorithms::polygonize)
 	return;
 }
 
-**
+/**
  * Calls gdal_translate.
  *
  * @throws Error
@@ -329,7 +329,7 @@ NAN_METHOD(Algorithms::translate)
     }
 
 	// Parse input source dataset
-    if(obj->HasOwnProperty(Nan::New("src").ToLocalChecked())){
+    if(Nan::HasOwnProperty(obj, Nan::New("src").ToLocalChecked()).FromMaybe(false)){
         prop = obj->Get(Nan::New("src").ToLocalChecked());
         if(prop->IsObject() && !prop->IsNull() && Nan::New(Dataset::constructor)->HasInstance(prop)){
             Dataset *ds = Nan::ObjectWrap::Unwrap<Dataset>(prop.As<Object>());
@@ -351,7 +351,7 @@ NAN_METHOD(Algorithms::translate)
 
     // Parse target destination path
     Local<String> sym = Nan::New("dst").ToLocalChecked();
-    if (!obj->HasOwnProperty(sym)){
+    if (!Nan::HasOwnProperty(obj, sym).FromMaybe(false)){
         Nan::ThrowError("Object must contain property dst"); return;
     }
     Local<Value> val = obj->Get(sym);
