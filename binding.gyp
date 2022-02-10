@@ -9,7 +9,7 @@
 		{
 			"target_name": "<(module_name)",
 			"type": "loadable_module",
-			"win_delay_load_hook": "false",
+			"win_delay_load_hook": "true",
 			"product_prefix": "",
 			"product_extension": "node",
 			"sources": [
